@@ -1,0 +1,48 @@
+{
+  "name": "set_output_json_format",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "experience": {
+        "type": "string",
+        "description": "The given description for Job "
+      },
+      "salary": {
+        "type": "string",
+        "description": "The given privided annual salary"
+      },
+      "expected_notice_period": {
+        "type": "string",
+        "description": "expected notice period"
+      },
+      "shift": {
+        "type": "string",
+        "description": "Optional parameter, tell time and type of shift"
+      },
+      "opportunity_type": {
+        "type": "string",
+        "description": "Type of opportunity, Remote or on-site"
+      },
+      "placement_type": {
+        "type": "string",
+        "description": "Contractual or temporary  or internship or employement"
+      },
+      "contract_duration": {
+        "type": "string",
+        "description": "part time, full time and duration in months or years"
+      },
+      "primary_skills": {
+        "type": "string",
+        "description": "Primary skills required, include both technical and non technical"
+      },
+      "roles_&_responsibilities": {
+        "type": "string",
+        "description": "The roles and responsibilities for the job."
+      },
+      "requirements": {
+        "type": "string",
+        "description": "requirements like, qualifications, eligibility"
+      }
+    }
+  }
+}

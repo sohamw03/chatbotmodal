@@ -7,6 +7,7 @@ import send_icon from "../assets/send_icon.svg";
 import Message from "./Message";
 import Spinner from "./Spinner";
 import styles from "./chatbot.module.css";
+import promptJson from "../prompt.json";
 
 export default function Chatbot() {
   // Set states
@@ -79,6 +80,12 @@ export default function Chatbot() {
       dangerouslyAllowBrowser: true,
     });
 
+    // Prompt
+    const prompt = `
+    ${text}
+    Analyse the job and generate a job description for the job and return a JSON object as a result.
+    `;
+
     try {
       setMsgLoading(true);
 
@@ -86,21 +93,26 @@ export default function Chatbot() {
         model: "gpt-3.5-turbo",
         messages: [
           {
+            role: "assistant",
+            content: `${Messages[Messages.length - 1]?.text ? Messages[Messages.length - 1]?.text : ""}`,
+          },
+          {
             role: "user",
             content: text,
           },
         ],
         temperature: 1,
-        max_tokens: 256,
+        max_tokens: 1024,
         top_p: 1,
         frequency_penalty: 0,
         presence_penalty: 0,
+        functions: [promptJson],
       });
 
       console.log(response);
-      const responseJson = await response.json();
-      if (responseJson.status) {
-        await renderBotMessage(responseJson);
+      // const responseJson = await response.json();
+      if (response) {
+        await renderBotMessage(response);
       }
       setInputAllowed(true);
 
@@ -116,7 +128,7 @@ export default function Chatbot() {
   const renderBotMessage = async (responseJson) => {
     updateTime();
 
-    setMessages((prevMessages) => [...prevMessages, { text: responseJson.choices[0].message.content, sender: "BOT", time: currentTime }]);
+    setMessages((prevMessages) => [...prevMessages, { text: responseJson.choices[0].message.function_call.arguments, sender: "BOT", time: currentTime }]);
 
     setTimeout(() => {
       document.querySelector('input[type="text"]').focus();

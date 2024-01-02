@@ -11,7 +11,7 @@ export default function Message(props) {
   return (
     <motion.div {...animation}>
       <div className={`${style_msgType} ${styles.message}`}>
-        <span className={styles.message_text}>{props.message.sender === "BOT" && isNewMessage && !props.IsAnimationRenderedOnce ? <TextAnimation text={props.message.text} scrollToBottom={props.scrollToBottom} /> : props.message.text}</span>
+        <span className={styles.message_text}>{props.message.text}</span>
         <span className={styles.message_time}>{props.message.time}</span>
       </div>
     </motion.div>
