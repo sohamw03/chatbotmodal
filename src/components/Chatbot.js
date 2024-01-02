@@ -159,8 +159,11 @@ export default function Chatbot() {
   //         index: 0,
   //         message: {
   //           role: "assistant",
-  //           content:
-  //             "Sure! Imagine you are on a fast-moving train and you have a friend sitting opposite you. You decide to throw a ball to your friend. When you throw the ball, it moves through the air and reaches your friend.\n\nNow, let's imagine that instead of being on a train, you are on a really fast spaceship. You and your friend are still playing catch, but this time, when you throw the ball to your friend, something strange happens. The ball doesn't just move straight to your friend, it actually curves a little bit.\n\nWhy does this happen? It's because when you are moving really fast, things behave differently. Even though it looks like you threw the ball straight, the ball actually curves due to something called \"relativity.\"\n\nRelativity is the idea that the way things move and act can change depending on how fast you are moving compared to something else. So, if you are moving very fast, things around you might behave differently than if you were sitting still.\n\nIn the example with the ball, even though you threw it straight, the spaceship was moving so fast that it affected the path of the ball. This is just one small part of the theory of relativity, which helps scientists understand how the whole universe works.",
+  //           content: "",
+  //           function_call: {
+  //             arguments:
+  //               "Sure! Imagine you are on a fast-moving train and you have a friend sitting opposite you. You decide to throw a ball to your friend. When you throw the ball, it moves through the air and reaches your friend.\n\nNow, let's imagine that instead of being on a train, you are on a really fast spaceship. You and your friend are still playing catch, but this time, when you throw the ball to your friend, something strange happens. The ball doesn't just move straight to your friend, it actually curves a little bit.\n\nWhy does this happen? It's because when you are moving really fast, things behave differently. Even though it looks like you threw the ball straight, the ball actually curves due to something called \"relativity.\"\n\nRelativity is the idea that the way things move and act can change depending on how fast you are moving compared to something else. So, if you are moving very fast, things around you might behave differently than if you were sitting still.\n\nIn the example with the ball, even though you threw it straight, the spaceship was moving so fast that it affected the path of the ball. This is just one small part of the theory of relativity, which helps scientists understand how the whole universe works.",
+  //           },
   //         },
   //         logprobs: null,
   //         finish_reason: "stop",
@@ -173,8 +176,9 @@ export default function Chatbot() {
   //     },
   //     system_fingerprint: null,
   //   };
+  //   console.log(testdata);
   //   setTimeout(() => {
-  //     const response = { response: testdata.choices[0].message.content, sender: "BOT", time: currentTime };
+  //     const response = testdata;
   //     renderBotMessage(response);
   //     setMsgLoading(false);
   //   }, 1000);
@@ -186,7 +190,7 @@ export default function Chatbot() {
         <section className={styles.main}>
           {/* Status Bar */}
           <div className={styles.statusbar}>
-            <span className={styles.statusbar_text}>Bot</span>
+            <span className={styles.statusbar_text}>HR Assistant</span>
             <button className={styles.minimize} onClick={toggleModal}>
               <img src={minimize_icon} alt="Minimize" />
             </button>
