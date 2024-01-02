@@ -128,7 +128,14 @@ export default function Chatbot() {
   const renderBotMessage = async (responseJson) => {
     updateTime();
 
-    setMessages((prevMessages) => [...prevMessages, { text: responseJson.choices[0].message.function_call.arguments, sender: "BOT", time: currentTime }]);
+    let text = "";
+    if (responseJson.choices[0].message.function_call !== undefined) {
+      text = responseJson.choices[0].message.function_call.arguments;
+    } else {
+      text = responseJson.choices[0].message.content;
+    }
+
+    setMessages((prevMessages) => [...prevMessages, { text: text, sender: "BOT", time: currentTime }]);
 
     setTimeout(() => {
       document.querySelector('input[type="text"]').focus();
