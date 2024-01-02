@@ -1,0 +1,273 @@
+.chatbot_btn {
+    position: fixed;
+    display: grid;
+    place-items: center;
+    right: 2rem;
+    bottom: 2rem;
+    box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
+    border-radius: 100%;
+    width: 4rem;
+    height: 4rem;
+    overflow: hidden;
+    background: var(--primary-color);
+    color: white;
+    z-index: 500;
+    cursor: pointer;
+}
+
+.chatbot_btn img {
+    filter: invert(1);
+    height: 55%;
+}
+
+.main {
+    position: fixed;
+    right: 2rem;
+    bottom: 2rem;
+    box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
+    border-radius: 0.625rem;
+    height: 30rem;
+    width: 20rem;
+    overflow: hidden;
+    background: white;
+}
+
+/* --------------------------------------- Chat Section --------------------------------------- */
+
+.statusbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background: var(--primary-color);
+    color: white;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.5;
+    z-index: 500;
+}
+
+.statusbar_text {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.minimize {
+    display: flex;
+    cursor: pointer;
+    margin-right: 0.5rem;
+    background: transparent;
+    align-items: center;
+}
+
+.minimize img {
+    filter: invert(1);
+    height: 16px;
+}
+
+.close_btn {
+    display: flex;
+    cursor: pointer;
+    background: transparent;
+    align-items: center;
+}
+
+.close_btn img {
+    filter: invert(1);
+    height: 16px;
+}
+
+.chatbot_frame {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background: white;
+    overflow: hidden;
+}
+
+.chat_section {
+    position: relative;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    margin-top: 0rem;
+}
+
+.chat_display {
+    width: 100%;
+    margin-top: 2.5rem;
+    height: calc(100% - 6rem);
+    padding: 1rem 0.5rem 0.5rem 0.5rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    scroll-behavior: smooth;
+}
+
+.message {
+    position: relative;
+    margin-bottom: 1rem;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+    padding: 0.375rem 0.75rem;
+    width: fit-content;
+    max-width: 80%;
+    white-space: pre-wrap;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    font-size: 1rem;
+    font-weight: normal;
+    line-height: 1.5;
+    border-radius: 0.5rem;
+}
+
+.user_message {
+    display: flex;
+    border-radius: 0.5rem 0.125rem 0.5rem 0.5rem;
+    margin-left: auto;
+    column-gap: auto;
+    background-color: var(--user-color);
+    color: var(--user-text-color);
+}
+
+.chatbot_message {
+    border-radius: 0.125rem 0.5rem 0.5rem 0.5rem;
+    display: flex;
+    margin-right: auto;
+    background-color: var(--chatbot-color);
+    color: var(--chatbot-text-color);
+}
+
+.user_message .message_text {
+    align-self: flex-end;
+}
+
+.chatbot_message .message_text {
+    align-self: flex-start;
+}
+
+.message_text_cursor {
+    display: inline-block;
+    height: 15px;
+    width: 4px;
+    background-color: #2B2B2B;
+    animation: blink 1s infinite;
+    transform: translateY(1px);
+}
+
+@keyframes blink {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+.message_img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 0.5rem;
+}
+
+.message_time {
+    display: block;
+    font-size: 12.5px !important;
+    text-align: end;
+    align-self: flex-end;
+}
+
+.spinner {
+    border-radius: 0.125rem 0.5rem 0.5rem 0.5rem;
+    background: var(--secondary-color);
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+    padding: 0.5rem 2rem;
+    width: fit-content;
+    max-width: 75%;
+    white-space: pre-wrap;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --------------------------------------- Input Section --------------------------------------- */
+
+.input_section {
+    box-sizing: border-box;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    z-index: 500;
+    /* padding-bottom: 1rem; */
+    display: block;
+    place-items: center;
+}
+
+.user_input {
+    display: flex;
+    /* box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25); */
+    border-radius: 0.625rem;
+    background-color: transparent;
+    /* box-shadow: 0 0 15px rgba(0, 0, 0, .1); */
+    margin: 0 auto;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.user_input input[type="text"] {
+    flex-grow: 1;
+    padding: 5px;
+    padding-left: 15px;
+    padding-right: 40px;
+    /* background: #ebebff; */
+    background-color: transparent;
+    height: 3rem;
+    color: var(--text-color);
+    outline: none;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.5;
+    border: none;
+    border-top: 1px solid #efefef;
+}
+
+
+.user_input input[type="text"]::placeholder {
+    color: #A3A3A3;
+    font-size: 16px;
+}
+
+.user_input button:disabled {
+    filter: grayscale(1);
+}
+
+.user_input button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    margin-right: 0.5rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
