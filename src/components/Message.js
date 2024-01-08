@@ -19,14 +19,14 @@ export default function Message(props) {
 
   useEffect(() => {
     scrollToBottom();
-  }, []);
+  });
 
   return (
     <motion.div {...animation}>
       <div className={`${style_msgType} ${styles.message}`}>
         <span className={styles.message_text}>{props.message.text}</span>
         {/* <span className={styles.message_time}>{props.message.time}</span> */}
-        <button className={styles.copyBtn} style={{ left: props.message.sender === "BOT" ? "0" : "auto", right: props.message.sender == "BOT" ? "auto" : "0" }} onClick={copyText}>
+        <button className={styles.copyBtn} style={{ left: props.message.sender === "BOT" ? "0" : "auto", right: props.message.sender === "BOT" ? "auto" : "0" }} onClick={copyText}>
           <img src={copy_icon} alt="Copy" />
         </button>
       </div>
