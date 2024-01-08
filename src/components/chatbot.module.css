@@ -4,6 +4,8 @@
     place-items: center;
     right: 2rem;
     bottom: 2rem;
+    /* right: 0;
+    bottom: 0; */
     box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
     border-radius: 100%;
     width: 4rem;
@@ -13,6 +15,7 @@
     color: white;
     z-index: 500;
     cursor: pointer;
+    pointer-events: all;
 }
 
 .chatbot_btn img {
@@ -24,12 +27,15 @@
     position: fixed;
     right: 2rem;
     bottom: 2rem;
+    /* right: 0;
+    bottom: 0; */
     box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
-    border-radius: 0.625rem;
-    height: 30rem;
-    width: 20rem;
+    border-radius: 1rem;
+    height: 40rem;
+    width: 25rem;
     overflow: hidden;
     background: white;
+    pointer-events: all;
 }
 
 /* --------------------------------------- Chat Section --------------------------------------- */
@@ -42,7 +48,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.5rem 1rem;
+    padding: 1rem 1rem;
     background: var(--primary-color);
     color: white;
     font-size: 16px;
@@ -68,7 +74,7 @@
 
 .minimize img {
     filter: invert(1);
-    height: 16px;
+    height: 18px;
 }
 
 .close_btn {
@@ -80,15 +86,16 @@
 
 .close_btn img {
     filter: invert(1);
-    height: 16px;
+    height: 18px;
 }
 
+/* Main Chatbot */
 .chatbot_frame {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
-    background: white;
+    background: var(--background-color);
     overflow: hidden;
 }
 
@@ -103,9 +110,9 @@
 
 .chat_display {
     width: 100%;
-    margin-top: 2.5rem;
+    margin-top: 3.5rem;
     height: calc(100% - 6rem);
-    padding: 1rem 0.5rem 0.5rem 0.5rem;
+    padding: 1rem 0.5rem 2.5rem 0.5rem;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -114,7 +121,7 @@
 
 .message {
     position: relative;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
     word-wrap: break-word;
     overflow-wrap: anywhere;
     padding: 0.375rem 0.75rem;
@@ -132,7 +139,8 @@
 
 .user_message {
     display: flex;
-    border-radius: 0.5rem 0.125rem 0.5rem 0.5rem;
+    border-radius: 1rem;
+    border-top-right-radius: 0.5rem;
     margin-left: auto;
     column-gap: auto;
     background-color: var(--user-color);
@@ -140,7 +148,8 @@
 }
 
 .chatbot_message {
-    border-radius: 0.125rem 0.5rem 0.5rem 0.5rem;
+    border-radius: 1rem;
+    border-top-left-radius: 0.5rem;
     display: flex;
     margin-right: auto;
     background-color: var(--chatbot-color);
@@ -186,11 +195,11 @@
 }
 
 .spinner {
-    border-radius: 0.125rem 0.5rem 0.5rem 0.5rem;
+    border-radius: 1rem;
     background: var(--secondary-color);
     word-wrap: break-word;
     overflow-wrap: anywhere;
-    padding: 0.5rem 2rem;
+    padding: 0rem 2rem;
     width: fit-content;
     max-width: 75%;
     white-space: pre-wrap;
@@ -201,18 +210,19 @@
 .copyBtn {
     position: absolute;
     background-color: var(--secondary-color);
-    border-radius: 0.5rem;
-    padding: 0.2rem 0.5rem;
+    border-radius: 1rem;
+    padding: 0.5rem;
     filter: brightness(100%);
     cursor: pointer;
     display: grid;
     place-items: center;
-    bottom: -2rem;
+    bottom: -2.3rem;
     z-index: 500;
 }
 
 .copyBtn img {
     width: 1rem;
+    height: 1rem;
 }
 
 .copyBtn:active {
@@ -250,8 +260,8 @@
     padding-left: 15px;
     padding-right: 40px;
     /* background: #ebebff; */
-    background-color: transparent;
-    height: 3rem;
+    background-color: var(--background-color);
+    height: 3.5rem;
     color: var(--text-color);
     outline: none;
     font-size: 16px;

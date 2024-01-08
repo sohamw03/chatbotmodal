@@ -13,7 +13,7 @@ export default function Spinner(props) {
   return (
     // Spinner for the chatbot message while user waits
     <motion.div className={styles.spinner} initial={{ opacity: 0, transform: "translateY(5px)" }} animate={{ opacity: 1, transform: ["translateY(0px)", "translateY(-5px)", "translateY(0px)"] }} transition={{ duration: 0.5 }} key={-1}>
-      <img src={loader} alt="loading" style={{ height: "2rem", width: "auto", objectFit: "contain" }} />
+      <img src={loader} alt="loading" style={{ height: "2.25rem", width: "auto", objectFit: "contain" }} />
     </motion.div>
   );
 }

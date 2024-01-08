@@ -13,10 +13,19 @@
   --chatbot-text-color: var(--text-color);
   --user-color: var(--primary-color);
   --user-text-color: white;
+
+  --background-color: white;
 }
 
 html {
   scroll-behavior: smooth;
+  width: max-content;
+  height: max-content;
+  pointer-events: none;
+}
+
+body {
+  pointer-events: none;
 }
 
 button {
