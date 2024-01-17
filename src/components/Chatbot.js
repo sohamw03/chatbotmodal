@@ -93,7 +93,7 @@ export default function Chatbot() {
 
       const responseJson = await response.json();
       console.log(responseJson);
-      if (responseJson) {
+      if (responseJson || response.status === 500) {
         await renderBotMessage(responseJson);
       }
       setInputAllowed(true);
