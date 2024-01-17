@@ -88,6 +88,7 @@ export default function Chatbot() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${sessionStorage.getItem("token") || ""}`,
         },
+        body: JSON.stringify({ query: text }),
       });
 
       const responseJson = await response.json();

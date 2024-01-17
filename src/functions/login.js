@@ -4,7 +4,7 @@ export async function login() {
     password: "password",
     employers: "demotest",
   };
-  const response = fetch(`${process.env.REACT_APP_API_URL}/Auth/Login`, {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/Auth/Login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -13,7 +13,7 @@ export async function login() {
     },
     body: JSON.stringify(data),
   });
-  const responseJson = response.body;
+  const responseJson = await response.json();
   console.log(responseJson);
   if (responseJson.token) {
     sessionStorage.setItem("token", responseJson.token);
