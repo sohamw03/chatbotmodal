@@ -16,28 +16,22 @@
             position: fixed;
             right: 2rem;
             bottom: 2rem;
-            height: 31rem;
-            width: 21rem;
+            height: 51rem;
+            width: 31rem;
         }
     </style>
+    <script>
+        window.onload = () => {
+            const iframe = document.querySelectorAll('iframe')[0];
+            // setInterval(() => {
+            iframe.contentWindow.postMessage({ msg: 'Hello from the other side!' }, '*')
+            // }, 2000);
+        }
+    </script>
 </head>
 
 <body>
-    <iframe src="http://localhost:3000"></iframe>
-
-</body>
-
-</html>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Webpage</title>
-</head>
-
-<body>
+    <iframe src="http://localhost:3000" allow="clipboard-read; clipboard-write;"></iframe>
     <h1>Welcome to My Webpage</h1>
 
     <h2>About Me</h2>
