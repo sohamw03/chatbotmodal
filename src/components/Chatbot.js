@@ -111,9 +111,9 @@ export default function Chatbot() {
   const renderBotMessage = async (responseJson) => {
     updateTime();
 
-    let text = "";
+    let text = JSON.stringify(responseJson);
 
-    setMessages((prevMessages) => [...prevMessages, { text: responseJson, sender: "BOT", time: currentTime }]);
+    setMessages((prevMessages) => [...prevMessages, { text: text, sender: "BOT", time: currentTime }]);
 
     setTimeout(() => {
       document.querySelector('input[type="text"]').focus();
