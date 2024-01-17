@@ -93,7 +93,7 @@ export default function Chatbot() {
 
       const responseJson = await response.json();
       console.log(responseJson);
-      if (responseJson || response.status === 500) {
+      if (responseJson) {
         await renderBotMessage(responseJson);
       }
       setInputAllowed(true);
@@ -101,8 +101,9 @@ export default function Chatbot() {
       setMsgLoading(false);
     } catch (error) {
       console.error(error);
-      alert("Server timed out please try again in some time! 🙂");
+      await renderBotMessage(`${error}`);
       setInputAllowed(true);
+      setMsgLoading(false);
     }
   };
 
