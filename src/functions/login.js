@@ -13,7 +13,7 @@ export async function login() {
     },
     body: JSON.stringify(data),
   });
-  const responseJson = await response;
+  const responseJson = response.body;
   console.log(responseJson);
   if (responseJson.token) {
     sessionStorage.setItem("token", responseJson.token);
