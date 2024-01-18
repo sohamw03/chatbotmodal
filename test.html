@@ -21,17 +21,19 @@
         }
     </style>
     <script>
-        window.onload = () => {
+        function sendMessageToIframe() {
             const iframe = document.querySelectorAll('iframe')[0];
-            // setInterval(() => {
-            iframe.contentWindow.postMessage({ msg: 'Hello from the other side!' }, '*')
-            // }, 2000);
+            iframe.contentWindow.postMessage({
+                clientId: '1234567890',
+                data: 'Hello from the other side!'
+            }, '*');
         }
     </script>
 </head>
 
 <body>
-    <iframe src="http://localhost:3000" allow="clipboard-read; clipboard-write;"></iframe>
+    <button onclick="sendMessageToIframe();">Send Data</button>
+    <iframe id="chatbot" src="http://localhost:3000" allow="clipboard-read; clipboard-write;"></iframe>
     <h1>Welcome to My Webpage</h1>
 
     <h2>About Me</h2>

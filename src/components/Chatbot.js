@@ -131,58 +131,58 @@ export default function Chatbot() {
   };
 
   // Simulate chatbot response | Testing and development of API connection purposes only
-  const simulateChatbotResponse = (message) => {
-    updateTime();
-    setMsgLoading(true);
-    const testdata = {
-      id: "chatcmpl-8cSlSa4OpUCuAU6kBvMBaqQtlp6Zz",
-      object: "chat.completion",
-      created: 1704177726,
-      model: "gpt-3.5-turbo-0613",
-      choices: [
-        {
-          index: 0,
-          message: {
-            role: "assistant",
-            content: "",
-            function_call: {
-              arguments: message,
-            },
-          },
-          logprobs: null,
-          finish_reason: "stop",
-        },
-      ],
-      usage: {
-        prompt_tokens: 18,
-        completion_tokens: 252,
-        total_tokens: 270,
-      },
-      system_fingerprint: null,
-    };
-    console.log(testdata);
-    setTimeout(() => {
-      const response = testdata;
-      renderBotMessage(response);
-      setMsgLoading(false);
-    }, 1000);
-  };
+  // const simulateChatbotResponse = (message) => {
+  //   updateTime();
+  //   setMsgLoading(true);
+  //   const testdata = {
+  //     id: "chatcmpl-8cSlSa4OpUCuAU6kBvMBaqQtlp6Zz",
+  //     object: "chat.completion",
+  //     created: 1704177726,
+  //     model: "gpt-3.5-turbo-0613",
+  //     choices: [
+  //       {
+  //         index: 0,
+  //         message: {
+  //           role: "assistant",
+  //           content: "",
+  //           function_call: {
+  //             arguments: message,
+  //           },
+  //         },
+  //         logprobs: null,
+  //         finish_reason: "stop",
+  //       },
+  //     ],
+  //     usage: {
+  //       prompt_tokens: 18,
+  //       completion_tokens: 252,
+  //       total_tokens: 270,
+  //     },
+  //     system_fingerprint: null,
+  //   };
+  //   console.log(testdata);
+  //   setTimeout(() => {
+  //     const response = testdata;
+  //     renderBotMessage(response);
+  //     setMsgLoading(false);
+  //   }, 1000);
+  // };
 
   // Catches the message sent to the iframe from the parent window
-  // useEffect(() => {
-  //   const receiveMessage = (event) => {
-  //     if (event.origin == "http://127.0.0.1:5500") {
-  //       console.log(event.data);
-  //       setModalOpen(true);
-  //       simulateChatbotResponse(event.data.msg);
-  //     }
-  //   };
+  useEffect(() => {
+    const receiveMessage = (event) => {
+      if (event.origin !== "http://localhost:3000") {
+        console.log(event);
+        setModalOpen(true);
+        renderBotMessage(event.data);
+      }
+    };
 
-  //   window.addEventListener("message", receiveMessage);
-  //   return () => {
-  //     window.removeEventListener("message", receiveMessage);
-  //   };
-  // });
+    window.addEventListener("message", receiveMessage);
+    return () => {
+      window.removeEventListener("message", receiveMessage);
+    };
+  }, []);
 
   useEffect(() => {
     login();
