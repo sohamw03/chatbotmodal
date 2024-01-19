@@ -14,7 +14,7 @@ export async function login() {
     body: JSON.stringify(data),
   });
   const responseJson = await response.json();
-  console.log(responseJson);
+  // console.log(responseJson);
   if (responseJson.token) {
     sessionStorage.setItem("token", responseJson.token);
   }

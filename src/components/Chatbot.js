@@ -172,7 +172,7 @@ export default function Chatbot() {
   useEffect(() => {
     const receiveMessage = (event) => {
       if (event.origin !== "http://localhost:3000") {
-        console.log(event);
+        // console.log(event);
         setModalOpen(true);
         renderBotMessage(event.data);
       }
