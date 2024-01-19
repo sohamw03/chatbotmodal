@@ -1,38 +1,8 @@
-.chatbot_btn {
-    position: fixed;
-    display: grid;
-    place-items: center;
-    /* right: 2rem;
-    bottom: 2rem; */
-    right: 0;
-    bottom: 0;
-    box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
-    border-radius: 100%;
-    width: 4rem;
-    height: 4rem;
-    overflow: hidden;
-    background: var(--primary-color);
-    color: white;
-    z-index: 500;
-    cursor: pointer;
-    pointer-events: all;
-}
-
-.chatbot_btn img {
-    filter: invert(1);
-    height: 55%;
-}
-
 .main {
-    position: fixed;
-    /* right: 2rem;
-    bottom: 2rem; */
-    right: 0;
-    bottom: 0;
-    box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
+    display: block;
     border-radius: 20px;
-    height: 40rem;
-    width: 25rem;
+    height: 100%;
+    width: 100%;
     overflow: hidden;
     background: white;
     pointer-events: all;
@@ -56,6 +26,7 @@
     font-weight: 500;
     line-height: 1.5;
     z-index: 500;
+    border-radius: 20px 20px 0 0;
 }
 
 .statusbar_text {
@@ -64,7 +35,7 @@
     flex: 1;
 }
 
-.minimize {
+.newChat {
     display: flex;
     cursor: pointer;
     margin-right: 0.5rem;
@@ -72,7 +43,7 @@
     align-items: center;
 }
 
-.minimize img {
+.newChat img {
     filter: invert(1);
     height: 18px;
 }
@@ -121,7 +92,7 @@
 
 .message {
     position: relative;
-    margin-bottom: 3rem;
+    margin-bottom: 3.5rem;
     word-wrap: break-word;
     overflow-wrap: anywhere;
     padding: 0.375rem 0.75rem;
@@ -195,6 +166,8 @@
 }
 
 .spinner {
+    pointer-events: none;
+    user-select: none;
     border-radius: 20px;
     background: var(--secondary-color);
     word-wrap: break-word;
@@ -207,8 +180,17 @@
     flex-direction: column;
 }
 
-.copyBtn {
+.actionBtns {
     position: absolute;
+    display: flex;
+    flex-direction: row;
+    width: max-content;
+    bottom: -2.5rem;
+    z-index: 500;
+    gap: 0.4rem;
+}
+
+.actionBtn {
     background-color: var(--secondary-color);
     border-radius: 20px;
     padding: 0.5rem;
@@ -216,16 +198,17 @@
     cursor: pointer;
     display: grid;
     place-items: center;
-    bottom: -2.3rem;
-    z-index: 500;
+    user-select: none;
 }
 
-.copyBtn img {
+.actionBtn img {
+    pointer-events: none;
+    user-select: none;
     width: 1rem;
     height: 1rem;
 }
 
-.copyBtn:active {
+.actionBtn:active {
     filter: brightness(80%);
 }
 
@@ -258,7 +241,7 @@
     flex-grow: 1;
     padding: 5px;
     padding-left: 15px;
-    padding-right: 40px;
+    padding-right: 3.5rem;
     /* background: #ebebff; */
     background-color: var(--background-color);
     height: 3.5rem;
@@ -287,7 +270,7 @@
     right: 0;
     top: 0;
     height: 100%;
-    margin-right: 0.5rem;
+    width: 3.5rem;
     background: transparent;
     border: none;
     cursor: pointer;

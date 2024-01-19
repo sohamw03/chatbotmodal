@@ -1,14 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import chatbot_icon from "../assets/chatbot_icon.svg";
+import { useNavigate } from "react-router-dom";
+import { login } from "../functions/login";
 import close_icon from "../assets/close_icon.svg";
-import minimize_icon from "../assets/minimize_icon.svg";
+import new_chat_icon from "../assets/new_chat_icon.svg";
 import send_icon from "../assets/send_icon.svg";
 import Message from "./Message";
 import Spinner from "./Spinner";
 import styles from "./chatbot.module.css";
-import promptJson from "../prompt.json";
-import { useNavigate } from "react-router-dom";
-import { login } from "../functions/login";
 
 export default function Chatbot() {
   // Set states
@@ -120,53 +118,29 @@ export default function Chatbot() {
     }, 50);
   };
 
-  // Toggle modal
-  const toggleModal = () => {
-    setModalOpen((prevModalOpen) => !prevModalOpen);
-    if (!modalOpen) {
-      setTimeout(() => {
-        document.querySelector('input[type="text"]').focus();
-      }, 50);
+  // Regenerate
+  const regenerate = async (text) => {
+    scrollToBottom();
+
+    setIsAnimationRenderedOnce(false);
+    if (text.trim() !== "") {
+      setMessages((prevMessages) => [...prevMessages, { text: text, sender: "User", time: currentTime }]);
+      postUserMessage(text);
     }
+    setInput("");
+    setTimeout(() => {
+      document.querySelector('input[type="text"]').focus();
+    }, 50);
   };
 
-  // Simulate chatbot response | Testing and development of API connection purposes only
-  // const simulateChatbotResponse = (message) => {
-  //   updateTime();
-  //   setMsgLoading(true);
-  //   const testdata = {
-  //     id: "chatcmpl-8cSlSa4OpUCuAU6kBvMBaqQtlp6Zz",
-  //     object: "chat.completion",
-  //     created: 1704177726,
-  //     model: "gpt-3.5-turbo-0613",
-  //     choices: [
-  //       {
-  //         index: 0,
-  //         message: {
-  //           role: "assistant",
-  //           content: "",
-  //           function_call: {
-  //             arguments: message,
-  //           },
-  //         },
-  //         logprobs: null,
-  //         finish_reason: "stop",
-  //       },
-  //     ],
-  //     usage: {
-  //       prompt_tokens: 18,
-  //       completion_tokens: 252,
-  //       total_tokens: 270,
-  //     },
-  //     system_fingerprint: null,
-  //   };
-  //   console.log(testdata);
-  //   setTimeout(() => {
-  //     const response = testdata;
-  //     renderBotMessage(response);
-  //     setMsgLoading(false);
-  //   }, 1000);
-  // };
+  // New Chat
+  const newChat = () => {
+    setMessages([]);
+    setInput("");
+    setTimeout(() => {
+      document.querySelector('input[type="text"]').focus();
+    }, 50);
+  };
 
   // Catches the message sent to the iframe from the parent window
   useEffect(() => {
@@ -190,55 +164,49 @@ export default function Chatbot() {
 
   return (
     <>
-      {modalOpen ? (
-        <section className={styles.main}>
-          {/* Status Bar */}
-          <div className={styles.statusbar}>
-            <span className={styles.statusbar_text}>HR Assistant</span>
-            <button className={styles.minimize} onClick={toggleModal}>
-              <img src={minimize_icon} alt="Minimize" />
-            </button>
-            <button className={styles.close_btn} onClick={toggleModal}>
-              <img src={close_icon} alt="Minimize" />
-            </button>
-          </div>
-          <div className={styles.chatbot_frame}>
-            <div className={styles.chat_section}>
-              {/* Chat Section */}
-              <div className={styles.chat_display} ref={chatDisplayRef}>
-                {Messages.map((message, index) => (
-                  <Message key={index} index={index} message={message} messagesLength={Messages.length} IsAnimationRenderedOnce={IsAnimationRenderedOnce} scrollToBottom={scrollToBottom} />
-                ))}
-                {MsgLoading && <Spinner scrollToBottom={scrollToBottom} />}
-              </div>
+      <section className={styles.main}>
+        {/* Status Bar */}
+        <div className={styles.statusbar}>
+          <span className={styles.statusbar_text}>HR Assistant</span>
+          <button className={styles.newChat} onClick={newChat}>
+            <img src={new_chat_icon} alt="NewChat" draggable="false" />
+          </button>
+          <button className={styles.close_btn}>
+            <img src={close_icon} alt="Minimize" draggable="false" />
+          </button>
+        </div>
+        <div className={styles.chatbot_frame}>
+          <div className={styles.chat_section}>
+            {/* Chat Section */}
+            <div className={styles.chat_display} ref={chatDisplayRef}>
+              {Messages.map((message, index) => (
+                <Message key={index} index={index} message={message} messagesLength={Messages.length} IsAnimationRenderedOnce={IsAnimationRenderedOnce} scrollToBottom={scrollToBottom} regenerate={regenerate} />
+              ))}
+              {MsgLoading && <Spinner scrollToBottom={scrollToBottom} />}
+            </div>
 
-              {/* Input Section */}
-              <div className={styles.input_section}>
-                <form className={styles.user_input} onSubmit={handleUserInput} autoComplete="off" noValidate>
-                  <input
-                    type="text"
-                    name="userMessage"
-                    placeholder="Ask a question"
-                    value={Input}
-                    onChange={(e) => {
-                      setInput(e.target.value);
-                    }}
-                    required
-                    autoComplete="off"
-                  />
-                  <button type="submit" disabled={!InputAllowed}>
-                    <img className={styles.send_icon} src={send_icon} alt="Send" />
-                  </button>
-                </form>
-              </div>
+            {/* Input Section */}
+            <div className={styles.input_section}>
+              <form className={styles.user_input} onSubmit={handleUserInput} autoComplete="off" noValidate>
+                <input
+                  type="text"
+                  name="userMessage"
+                  placeholder="Ask a question"
+                  value={Input}
+                  onChange={(e) => {
+                    setInput(e.target.value);
+                  }}
+                  required
+                  autoComplete="off"
+                />
+                <button type="submit" disabled={!InputAllowed}>
+                  <img className={styles.send_icon} src={send_icon} alt="Send" draggable="false" />
+                </button>
+              </form>
             </div>
           </div>
-        </section>
-      ) : (
-        <button className={styles.chatbot_btn} onClick={toggleModal}>
-          <img src={chatbot_icon} alt="Chatbot" />
-        </button>
-      )}
+        </div>
+      </section>
     </>
   );
 }

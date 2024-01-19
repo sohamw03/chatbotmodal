@@ -17,6 +17,10 @@ export default function Message(props) {
     navigator.clipboard.writeText(props.message.text);
   };
 
+  const regenerate = () => {
+    props.regenerate(props.message.text);
+  };
+
   useEffect(() => {
     scrollToBottom();
   });
@@ -26,9 +30,16 @@ export default function Message(props) {
       <div className={`${style_msgType} ${styles.message}`}>
         <span className={styles.message_text}>{props.message.text}</span>
         {/* <span className={styles.message_time}>{props.message.time}</span> */}
-        <button className={styles.copyBtn} style={{ left: props.message.sender === "BOT" ? "0" : "auto", right: props.message.sender === "BOT" ? "auto" : "0" }} onClick={copyText}>
-          <img src={copy_icon} alt="Copy" />
-        </button>
+        <div className={styles.actionBtns} style={{ left: props.message.sender === "BOT" ? "0" : "auto", right: props.message.sender === "BOT" ? "auto" : "0" }}>
+          <button className={styles.actionBtn} onClick={copyText}>
+            <img src={copy_icon} alt="Copy" draggable="false" />
+          </button>
+          {props.message.sender === "BOT" ? (
+            <button className={styles.actionBtn} onClick={regenerate}>
+              <span>Regenerate</span>
+            </button>
+          ) : null}
+        </div>
       </div>
     </motion.div>
   );
