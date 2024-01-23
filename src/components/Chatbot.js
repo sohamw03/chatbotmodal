@@ -76,6 +76,7 @@ export default function Chatbot() {
     setInputAllowed(false);
     let UseCaseId, data;
     if (isJson) {
+      console.log(text);
       text = JSON.parse(text);
       UseCaseId = text.UseCaseId;
       data = text.data;
@@ -132,7 +133,7 @@ export default function Chatbot() {
     if (isJson) {
       text = JSON.stringify(text);
       setMessages((prevMessages) => [...prevMessages, { text: text, sender: "User", time: currentTime }]);
-      postUserMessage(text);
+      postUserMessage(text, true);
     } else if (text.trim() !== "") {
       setMessages((prevMessages) => [...prevMessages, { text: text, sender: "User", time: currentTime }]);
       postUserMessage(text);
