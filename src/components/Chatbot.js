@@ -79,7 +79,19 @@ export default function Chatbot() {
       console.log(text);
       text = JSON.parse(text);
       UseCaseId = text.UseCaseId;
-      data = text.data;
+      // Convert comma separated string to object
+      data = JSON.stringify(text.data)
+        .replace(/"/g, "")
+        .replace("{", "")
+        .replace("}", "")
+        .split(",")
+        .reduce((obj, item, index, arr) => {
+          if (index % 2 === 0) {
+            item = item.trim();
+            obj[item] = arr[index + 1].trim();
+          }
+          return obj;
+        }, {});
     } else {
       data = text;
     }
