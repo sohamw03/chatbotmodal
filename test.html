@@ -24,9 +24,9 @@
         function sendMessageToIframe() {
             const iframe = document.querySelectorAll('iframe')[0];
             iframe.contentWindow.postMessage({
-                clientId: '1234567890',
-                data: 'Hello from the other side!'
-            }, '*');
+                UserCaseId: '3',
+                data: 'position_title, React Native Developer, job_category, Software Development'
+            }, 'http://localhost:3000');
         }
     </script>
 </head>

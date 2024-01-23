@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
 import { login } from "../functions/login";
 import close_icon from "../assets/close_icon.svg";
 import new_chat_icon from "../assets/new_chat_icon.svg";
@@ -10,7 +10,6 @@ import styles from "./chatbot.module.css";
 
 export default function Chatbot() {
   // Set states
-  const [modalOpen, setModalOpen] = useState(false);
   const [IsAnimationRenderedOnce, setIsAnimationRenderedOnce] = useState(false);
   const [MsgLoading, setMsgLoading] = useState(false);
   const [Messages, setMessages] = useState([]);
@@ -34,7 +33,6 @@ export default function Chatbot() {
   const scrollToBottom = () => {
     // Code to scroll .chat-display to bottom
     setTimeout(() => {
-      // document.querySelector("div[chat-display]").scrollTop = document.querySelector("div[chat-display]").scrollHeight;
       chatDisplayRef.current.scrollTop = chatDisplayRef.current.scrollHeight;
     }, 150);
   };
@@ -74,19 +72,27 @@ export default function Chatbot() {
   };
 
   // Post user message to the server
-  const postUserMessage = async (text) => {
+  const postUserMessage = async (text, isJson = false) => {
     setInputAllowed(false);
+    let UseCaseId, data;
+    if (isJson) {
+      text = JSON.parse(text);
+      UseCaseId = text.UseCaseId;
+      data = text.data;
+    } else {
+      data = text;
+    }
 
     try {
       setMsgLoading(true);
 
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/AlchemusAi/Generate/2`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/AlchemusAi/Generate/${UseCaseId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${sessionStorage.getItem("token") || ""}`,
         },
-        body: JSON.stringify({ query: text }),
+        body: JSON.stringify(data),
       });
 
       const responseJson = await response.json();
@@ -119,11 +125,15 @@ export default function Chatbot() {
   };
 
   // Regenerate
-  const regenerate = async (text) => {
+  const regenerate = async (text, isJson = false) => {
     scrollToBottom();
 
     setIsAnimationRenderedOnce(false);
-    if (text.trim() !== "") {
+    if (isJson) {
+      text = JSON.stringify(text);
+      setMessages((prevMessages) => [...prevMessages, { text: text, sender: "User", time: currentTime }]);
+      postUserMessage(text);
+    } else if (text.trim() !== "") {
       setMessages((prevMessages) => [...prevMessages, { text: text, sender: "User", time: currentTime }]);
       postUserMessage(text);
     }
@@ -145,10 +155,10 @@ export default function Chatbot() {
   // Catches the message sent to the iframe from the parent window
   useEffect(() => {
     const receiveMessage = (event) => {
-      if (event.origin !== "http://localhost:3000") {
+      if (event.origin !== "http://localhost:3000" && event.origin !== "http://192.168.168.117:3000") {
         // console.log(event);
-        setModalOpen(true);
-        renderBotMessage(event.data);
+        newChat();
+        regenerate(event.data, true);
       }
     };
 
