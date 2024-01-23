@@ -24,7 +24,7 @@
         function sendMessageToIframe() {
             const iframe = document.querySelectorAll('iframe')[0];
             iframe.contentWindow.postMessage({
-                UserCaseId: '3',
+                UseCaseId: '3',
                 data: 'position_title, React Native Developer, job_category, Software Development'
             }, 'http://localhost:3000');
         }
