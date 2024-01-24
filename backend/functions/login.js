@@ -1,10 +1,6 @@
-export async function login() {
+export async function login(payload) {
   try {
-    const data = {
-      username: "sagar",
-      password: "password",
-      employers: "demotest",
-    };
+    const data = payload;
     const response = await fetch(`${process.env.REACT_APP_API_URL}/Auth/Login`, {
       method: "POST",
       headers: {

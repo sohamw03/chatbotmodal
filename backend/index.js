@@ -1,26 +1,25 @@
-const express = require("express");
-const { createRenderContext } = require("ai-jsx");
-const cors = require("cors");
+import express from "express";
+import cors from "cors";
+
 const app = express();
 const port = 8000;
-
-const renderContext = createRenderContext({
-  // Specify your engine and options here
-  engine: "openai", // or any other supported engine
-  options: {
-    apiKey: "YOUR_OPENAI_API_KEY", // if using OpenAI models
-  },
-});
 
 // Enable CORS
 app.use(cors());
 
-// Define an API endpoint
-app.post("/chat", async (req, res) => {
+// Login API
+app.post("/api/login", async (req, res) => {
+  try {
+  } catch (error) {
+    console.error(error);
+    res.status(200).json({ text: "Failed to login" });
+  }
+});
+
+// Generate API
+app.post("/api/generate", async (req, res) => {
   try {
     const prompt = req.body.prompt;
-    const response = await renderContext.render(prompt);
-    res.json({ text: response });
   } catch (error) {
     console.error(error);
     res.status(200).json({ text: "Failed to generate text" });
@@ -28,5 +27,5 @@ app.post("/chat", async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`Chatbot backend listening at http://localhost:${port}`);
 });
