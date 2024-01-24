@@ -122,7 +122,7 @@ export default function Chatbot() {
   const renderBotMessage = async (responseJson) => {
     updateTime();
 
-    let text = JSON.stringify(responseJson);
+    let text = JSON.stringify(responseJson.output);
 
     setMessages((prevMessages) => [...prevMessages, { text: text, sender: "BOT", time: currentTime }]);
 
