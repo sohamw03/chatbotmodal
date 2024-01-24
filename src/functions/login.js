@@ -17,7 +17,7 @@ export async function login() {
     const responseJson = await response.json();
     // console.log(responseJson);
     if (responseJson.token) {
-      return responseJson.token;
+      sessionStorage.setItem("token", responseJson.token);
     }
   } catch (error) {
     console.log(error);

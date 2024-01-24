@@ -22,7 +22,6 @@ export default function Chatbot() {
       hour12: true,
     })
   );
-  const [loginToken, setLoginToken] = useState("");
 
   // Navigate
   const navigate = useNavigate();
@@ -75,21 +74,28 @@ export default function Chatbot() {
   // Post user message to the server
   const postUserMessage = async (text, isJson = false) => {
     setInputAllowed(false);
-
-    // If the message is a JSON object, extract the UseCaseId and data
     let UseCaseId, data;
     if (isJson) {
       console.log(text);
       text = JSON.parse(text);
-      console.log(typeof text);
       UseCaseId = text.UseCaseId;
       // Convert comma separated string to object
-      data = text.data;
+      data = JSON.stringify(text.data)
+        .replace(/"/g, "")
+        .replace("{", "")
+        .replace("}", "")
+        .split(",")
+        .reduce((obj, item, index, arr) => {
+          if (index % 2 === 0) {
+            item = item.trim();
+            obj[item] = arr[index + 1].trim();
+          }
+          return obj;
+        }, {});
     } else {
       data = text;
     }
 
-    // Call the API
     try {
       setMsgLoading(true);
 
@@ -97,7 +103,7 @@ export default function Chatbot() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${loginToken}`,
+          Authorization: `Bearer ${sessionStorage.getItem("token") || ""}`,
         },
         body: JSON.stringify(data),
       });
@@ -161,11 +167,6 @@ export default function Chatbot() {
 
   // Catches the message sent to the iframe from the parent window
   useEffect(() => {
-    const saveLoginToken = async () => {
-      setLoginToken(await login());
-    };
-    saveLoginToken();
-
     const receiveMessage = (event) => {
       if (event.origin !== "http://localhost:3000" && event.origin !== "http://192.168.168.117:3000") {
         // console.log(event);
@@ -178,6 +179,10 @@ export default function Chatbot() {
     return () => {
       window.removeEventListener("message", receiveMessage);
     };
+  }, []);
+
+  useEffect(() => {
+    login();
   }, []);
 
   return (
