@@ -161,7 +161,10 @@ export default function Chatbot() {
 
   // Catches the message sent to the iframe from the parent window
   useEffect(() => {
-    setLoginToken(login());
+    const saveLoginToken = async () => {
+      setLoginToken(await login());
+    };
+    saveLoginToken();
 
     const receiveMessage = (event) => {
       if (event.origin !== "http://localhost:3000" && event.origin !== "http://192.168.168.117:3000") {
