@@ -1,171 +1,108 @@
-import { useEffect, useRef, useState } from "react";
-import { json, useNavigate } from "react-router-dom";
-import { login } from "../functions/login";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import close_icon from "../assets/close_icon.svg";
 import new_chat_icon from "../assets/new_chat_icon.svg";
 import send_icon from "../assets/send_icon.svg";
+import { useGlobal } from "../context/GlobalContext";
+import { login } from "../functions/loginAPI";
+import { useUtilities } from "../utils/utils";
 import Message from "./Message";
 import Spinner from "./Spinner";
 import styles from "./chatbot.module.css";
+import generateAPI from "../functions/generateAPI";
+import resumeChatAPI from "../functions/resumeChatAPI";
+import deleteChatAPI from "../functions/deleteChatAPI";
 
 export default function Chatbot() {
-  // Set states
-  const [IsAnimationRenderedOnce, setIsAnimationRenderedOnce] = useState(false);
-  const [MsgLoading, setMsgLoading] = useState(false);
-  const [Messages, setMessages] = useState([]);
-  const [InputAllowed, setInputAllowed] = useState(true);
-  const [Input, setInput] = useState("");
-  const [currentTime, setCurrentTime] = useState(
-    new Date().toLocaleString("en-US", {
-      hour: "numeric",
-      minute: "numeric",
-      hour12: true,
-    })
-  );
-  const [loginToken, setLoginToken] = useState("");
+  // Global
+  const { chatDisplayRef, inputRef, MsgLoading, setMsgLoading, Messages, setMessages, InputAllowed, setInputAllowed, Input, setInput, currentTime } = useGlobal();
+  // Utilities
+  const { scrollToBottom, focusInput, updateTime, renderMessageOnScreen } = useUtilities();
 
   // Navigate
   const navigate = useNavigate();
-
-  // Set References
-  const chatDisplayRef = useRef(null);
-
-  // Utility functions
-  const scrollToBottom = () => {
-    // Code to scroll .chat-display to bottom
-    setTimeout(() => {
-      chatDisplayRef.current.scrollTop = chatDisplayRef.current.scrollHeight;
-    }, 150);
-  };
-
-  // Update current time
-  const updateTime = () => {
-    setCurrentTime(
-      new Date().toLocaleString("en-US", {
-        hour: "numeric",
-        minute: "numeric",
-        hour12: true,
-      })
-    );
-  };
 
   // Handle user input
   const handleUserInput = (event) => {
     event.preventDefault();
     scrollToBottom();
 
-    setIsAnimationRenderedOnce(false);
-    const text = Input;
+    const data = {
+      conversation_id: "0a87bd42-f93e-4a86-add4-bd793eeed4d6",
+      prompt: "what are their skills ?",
+    };
     updateTime();
-    if (text.trim() !== "") {
-      setMessages((prevMessages) => [...prevMessages, { text: text, sender: "User", time: currentTime }]);
-
-      // ENSURE THIS IS ON FOR PRODUCTION ↓
-      setTimeout(() => {
-        postUserMessage(text);
-      }, 1000);
-      // simulateChatbotResponse(text);
+    if (data.prompt.trim() !== "") {
+      setMessages((prevMessages) => [...prevMessages, { text: data.prompt, sender: "User", time: currentTime }]);
+      postUserMessage(data, "chat");
     }
     setInput("");
-    setTimeout(() => {
-      document.querySelector('input[type="text"]').focus();
-    }, 50);
+    focusInput();
   };
 
   // Post user message to the server
-  const postUserMessage = async (text, isJson = false) => {
+  const postUserMessage = async (text, mode = "generate" | "chat") => {
     setInputAllowed(false);
 
-    // If the message is a JSON object, extract the UseCaseId and data
+    // Check if the message is in generate mode
     let UseCaseId, data;
-    if (isJson) {
-      console.log(text);
-      text = JSON.parse(text);
-      console.log(typeof text);
-      UseCaseId = text.UseCaseId;
-      // Convert comma separated string to object
-      data = text.data;
-    } else {
-      data = text;
+    switch (mode) {
+      case "generate":
+        console.log(text);
+        UseCaseId = text.UseCaseId;
+        data = text.data;
+        break;
+      case "chat":
+        data = text;
+        break;
     }
 
     // Call the API
     try {
       setMsgLoading(true);
 
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/AlchemusAi/Generate/${UseCaseId}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(data),
-      });
+      let responseJson;
+      switch (mode) {
+        case "generate":
+          responseJson = await generateAPI(data, UseCaseId);
+          break;
+        case "chat":
+          responseJson = await resumeChatAPI(data);
+          break;
+      }
 
-      const responseJson = await response.json();
       console.log(responseJson);
       if (responseJson) {
-        await renderBotMessage(responseJson);
+        renderMessageOnScreen(responseJson.output, "BOT");
       }
-      setInputAllowed(true);
-
-      setMsgLoading(false);
     } catch (error) {
       console.error(error);
-      await renderBotMessage(`${error}`);
+      renderMessageOnScreen(`${error}`, "BOT");
+    } finally {
       setInputAllowed(true);
       setMsgLoading(false);
     }
-  };
-
-  // Render chatbot response
-  const renderBotMessage = async (responseJson) => {
-    updateTime();
-
-    let text = JSON.stringify(responseJson.output);
-
-    setMessages((prevMessages) => [...prevMessages, { text: text, sender: "BOT", time: currentTime }]);
-
-    setTimeout(() => {
-      document.querySelector('input[type="text"]').focus();
-    }, 50);
-  };
-
-  // Regenerate
-  const regenerate = async (text, isJson = false) => {
-    scrollToBottom();
-
-    setIsAnimationRenderedOnce(false);
-    if (isJson) {
-      text = JSON.stringify(text);
-      setMessages((prevMessages) => [...prevMessages, { text: text, sender: "User", time: currentTime }]);
-      postUserMessage(text, true);
-    } else if (text.trim() !== "") {
-      setMessages((prevMessages) => [...prevMessages, { text: text, sender: "User", time: currentTime }]);
-      postUserMessage(text);
-    }
-    setInput("");
-    setTimeout(() => {
-      document.querySelector('input[type="text"]').focus();
-    }, 50);
   };
 
   // New Chat
   const newChat = () => {
+    const data = {
+      conversation_id: "0a87bd42-f93e-4a86-add4-bd793eeed4d6",
+    };
+    deleteChatAPI(data);
     setMessages([]);
     setInput("");
-    setTimeout(() => {
-      document.querySelector('input[type="text"]').focus();
-    }, 50);
+    focusInput();
   };
 
   // Catches the message sent to the iframe from the parent window
   useEffect(() => {
     const receiveMessage = (event) => {
-      if (event.origin !== "http://localhost:3000" && event.origin !== "http://192.168.168.117:3000") {
+      if (event.origin !== "http://localhost:3000" && event.origin !== "http://192.168.168.117:3000" && event.origin !== "http://127.0.0.1:3000") {
         // console.log(event);
         newChat();
-        regenerate(event.data, true);
+        renderMessageOnScreen(event.data, "USER");
+        postUserMessage(event.data, "generate");
       }
     };
 
@@ -197,7 +134,7 @@ export default function Chatbot() {
             {/* Chat Section */}
             <div className={styles.chat_display} ref={chatDisplayRef}>
               {Messages.map((message, index) => (
-                <Message key={index} index={index} message={message} messagesLength={Messages.length} IsAnimationRenderedOnce={IsAnimationRenderedOnce} scrollToBottom={scrollToBottom} regenerate={regenerate} />
+                <Message key={index} index={index} message={message} messagesLength={Messages.length} scrollToBottom={scrollToBottom} regenerate={renderMessageOnScreen} />
               ))}
               {MsgLoading && <Spinner scrollToBottom={scrollToBottom} />}
             </div>
@@ -213,6 +150,7 @@ export default function Chatbot() {
                   onChange={(e) => {
                     setInput(e.target.value);
                   }}
+                  ref={inputRef}
                   required
                   autoComplete="off"
                 />

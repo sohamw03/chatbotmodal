@@ -1,5 +1,6 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Chatbot from "./components/Chatbot";
+import { GlobalProvider } from "./context/GlobalContext";
 
 function App() {
   return (
@@ -7,7 +8,15 @@ function App() {
       <Router>
         <div className="App">
           <Routes>
-            <Route exact path="/" element={<Chatbot />} />
+            <Route // This is the default route
+              exact
+              path="/"
+              element={
+                <GlobalProvider>
+                  <Chatbot />
+                </GlobalProvider>
+              }
+            />
             <Route exact path="/page1" element={<Chatbot />} />
           </Routes>
         </div>
