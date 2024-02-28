@@ -12,6 +12,8 @@ export function GlobalProvider({ children }) {
   const [Messages, setMessages] = useState([]);
   const [InputAllowed, setInputAllowed] = useState(true);
   const [Input, setInput] = useState("");
+  const [convoId, setConvoId] = useState("");
+  const [chatMode, setChatMode] = useState("");
 
   const [currentTime, setCurrentTime] = useState(
     new Date().toLocaleString("en-US", {
@@ -34,6 +36,10 @@ export function GlobalProvider({ children }) {
     setInputAllowed,
     Input,
     setInput,
+    convoId,
+    setConvoId,
+    chatMode,
+    setChatMode,
   };
 
   return <GlobalContext.Provider value={values}>{children}</GlobalContext.Provider>;

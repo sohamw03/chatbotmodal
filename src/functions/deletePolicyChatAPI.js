@@ -1,12 +1,11 @@
-export default async function deleteChatAPI(data) {
+export default async function deleteResumeChatAPI(data) {
   try {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/end_resume_chat/${data.conversation_id}`, {
-      method: "POST",
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/end_policy_chat/${data.conversation_id}`, {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${sessionStorage.getItem("token")}`,
       },
-      body: JSON.stringify(data),
     });
 
     if (!response.ok) {

@@ -4,18 +4,20 @@ import close_icon from "../assets/close_icon.svg";
 import new_chat_icon from "../assets/new_chat_icon.svg";
 import send_icon from "../assets/send_icon.svg";
 import { useGlobal } from "../context/GlobalContext";
+import deleteResumeChatAPI from "../functions/deleteResumeChatAPI";
+import deletePolicyChatAPI from "../functions/deletePolicyChatAPI";
 import { login } from "../functions/loginAPI";
+import policyChatAPI from "../functions/policyChatAPI";
+import resumeChatAPI from "../functions/resumeChatAPI";
+import generateAPI from "../functions/resumeGenerateAPI";
 import { useUtilities } from "../utils/utils";
 import Message from "./Message";
 import Spinner from "./Spinner";
 import styles from "./chatbot.module.css";
-import generateAPI from "../functions/generateAPI";
-import resumeChatAPI from "../functions/resumeChatAPI";
-import deleteChatAPI from "../functions/deleteChatAPI";
 
 export default function Chatbot() {
   // Global
-  const { chatDisplayRef, inputRef, MsgLoading, setMsgLoading, Messages, setMessages, InputAllowed, setInputAllowed, Input, setInput, currentTime } = useGlobal();
+  const { chatDisplayRef, inputRef, MsgLoading, setMsgLoading, Messages, setMessages, InputAllowed, setInputAllowed, Input, setInput, currentTime, convoId, setConvoId, chatMode, setChatMode } = useGlobal();
   // Utilities
   const { scrollToBottom, focusInput, updateTime, renderMessageOnScreen } = useUtilities();
 
@@ -28,31 +30,34 @@ export default function Chatbot() {
     scrollToBottom();
 
     const data = {
-      conversation_id: "0a87bd42-f93e-4a86-add4-bd793eeed4d6",
-      prompt: "what are their skills ?",
+      conversation_id: convoId,
+      prompt: event.target.userMessage.value,
     };
     updateTime();
     if (data.prompt.trim() !== "") {
       setMessages((prevMessages) => [...prevMessages, { text: data.prompt, sender: "User", time: currentTime }]);
-      postUserMessage(data, "chat");
+      postUserMessage(data, chatMode === "policy" ? "policychat" : "resumechat");
     }
     setInput("");
     focusInput();
   };
 
   // Post user message to the server
-  const postUserMessage = async (text, mode = "generate" | "chat") => {
+  const postUserMessage = async (text, mode = "resumegenerate" | "resumechat" | "policychat") => {
     setInputAllowed(false);
 
     // Check if the message is in generate mode
     let UseCaseId, data;
     switch (mode) {
-      case "generate":
+      case "resumegenerate":
         console.log(text);
         UseCaseId = text.UseCaseId;
         data = text.data;
         break;
-      case "chat":
+      case "resumechat":
+        data = text;
+        break;
+      case "policychat":
         data = text;
         break;
     }
@@ -63,11 +68,14 @@ export default function Chatbot() {
 
       let responseJson;
       switch (mode) {
-        case "generate":
+        case "resumegenerate":
           responseJson = await generateAPI(data, UseCaseId);
           break;
-        case "chat":
+        case "resumechat":
           responseJson = await resumeChatAPI(data);
+          break;
+        case "policychat":
+          responseJson = await policyChatAPI(data);
           break;
       }
 
@@ -89,7 +97,17 @@ export default function Chatbot() {
     const data = {
       conversation_id: "0a87bd42-f93e-4a86-add4-bd793eeed4d6",
     };
-    deleteChatAPI(data);
+    switch (chatMode) {
+      case "policy":
+        deletePolicyChatAPI(data);
+        break;
+      case "resume":
+        deleteResumeChatAPI(data);
+        break;
+      default:
+        break;
+    }
+
     setMessages([]);
     setInput("");
     focusInput();
@@ -102,7 +120,18 @@ export default function Chatbot() {
         // console.log(event);
         newChat();
         renderMessageOnScreen(event.data, "USER");
-        postUserMessage(event.data, "generate");
+        switch (event.data.mode) {
+          case "policy":
+            setChatMode("policy");
+            setConvoId(event.data.conversation_id);
+            break;
+          case "resume":
+            setChatMode("resume");
+            postUserMessage(event.data, "resumegenerate");
+            break;
+          default:
+            break;
+        }
       }
     };
 
