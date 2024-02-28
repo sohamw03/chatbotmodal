@@ -95,7 +95,7 @@ export default function Chatbot() {
   // New Chat
   const newChat = () => {
     const data = {
-      conversation_id: "0a87bd42-f93e-4a86-add4-bd793eeed4d6",
+      conversation_id: convoId,
     };
     switch (chatMode) {
       case "policy":

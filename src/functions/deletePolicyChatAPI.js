@@ -1,6 +1,6 @@
 export default async function deleteResumeChatAPI(data) {
   try {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/end_policy_chat/${data.conversation_id}`, {
+    const response = await fetch(`${process.env.REACT_APP_API_POLICY_URL}/end_policy_chat/${data.conversation_id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
