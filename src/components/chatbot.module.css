@@ -38,24 +38,11 @@
 .newChat {
     display: flex;
     cursor: pointer;
-    margin-right: 0.5rem;
     background: transparent;
     align-items: center;
 }
 
 .newChat img {
-    filter: invert(1);
-    height: 18px;
-}
-
-.close_btn {
-    display: flex;
-    cursor: pointer;
-    background: transparent;
-    align-items: center;
-}
-
-.close_btn img {
     filter: invert(1);
     height: 18px;
 }

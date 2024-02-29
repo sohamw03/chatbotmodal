@@ -119,13 +119,13 @@ export default function Chatbot() {
       if (event.origin !== "http://localhost:3000" && event.origin !== "http://192.168.168.117:3000" && event.origin !== "http://127.0.0.1:3000") {
         // console.log(event);
         newChat();
-        renderMessageOnScreen(event.data, "USER");
         switch (event.data.mode) {
           case "policy":
             setChatMode("policy");
             setConvoId(event.data.conversation_id);
             break;
           case "resume":
+            renderMessageOnScreen(event.data, "USER");
             setChatMode("resume");
             postUserMessage(event.data, "resumegenerate");
             break;
@@ -153,9 +153,6 @@ export default function Chatbot() {
           <span className={styles.statusbar_text}>HR Assistant</span>
           <button className={styles.newChat} onClick={newChat}>
             <img src={new_chat_icon} alt="NewChat" draggable="false" />
-          </button>
-          <button className={styles.close_btn}>
-            <img src={close_icon} alt="Minimize" draggable="false" />
           </button>
         </div>
         <div className={styles.chatbot_frame}>
