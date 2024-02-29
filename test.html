@@ -21,22 +21,26 @@
         }
     </style>
     <script>
-        function sendMessageToIframe() {
+        function sendMessageToIframe(mode) {
             const iframe = document.querySelectorAll('iframe')[0];
-            iframe.contentWindow.postMessage({
-                mode: "policy",
+            const data = mode == "resume" ? {
+                mode: mode,
+                UseCaseId: "1",
+                data: { position_title: "React Native Developer", job_category: "Software Development" },
+            } : {
+                mode: mode,
                 conversation_id: "8935e7b9-8615-41c4-8993-40f48ab8fc0a",
-                // UseCaseId: "1",
-                // data: { position_title: "React Native Developer", job_category: "Software Development" },
-            }, 'http://192.168.168.117:3000');
+            }
+
+            iframe.contentWindow.postMessage(data, 'http://192.168.168.117:3000');
         }
     </script>
 </head>
 
 <body>
-    <button onclick="sendMessageToIframe();">Send Data</button>
+    <button onclick="sendMessageToIframe(`resume`);">Invoke Resume</button>
+    <button onclick="sendMessageToIframe(`policy`);">Invoke Policy</button>
     <iframe id="chatbot" src="http://192.168.168.117:3000" allow="clipboard-read; clipboard-write;"></iframe>
-    <!-- <iframe id="chatbot" src="http://localhost:3000" allow="clipboard-read; clipboard-write;"></iframe> -->
     <h1>Welcome to My Webpage</h1>
 
     <h2>About Me</h2>
