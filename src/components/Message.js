@@ -2,10 +2,13 @@ import { motion } from "framer-motion";
 import copy_icon from "../assets/copy_icon.svg";
 import styles from "./chatbot.module.css";
 import { useEffect } from "react";
+import { useGlobal } from "../context/GlobalContext";
 
 export default function Message(props) {
   // Chatbot context
   const { scrollToBottom } = props;
+
+  const { chatMode } = useGlobal();
 
   // New messages can be animated using framer motion
   const isNewMessage = props.index === props.messagesLength - 1;
@@ -34,7 +37,7 @@ export default function Message(props) {
           <button className={styles.actionBtn} onClick={copyText}>
             <img src={copy_icon} alt="Copy" draggable="false" />
           </button>
-          {props.message.sender === "BOT" ? (
+          {props.message.sender === "BOT" && chatMode == "resume" ? (
             <button className={styles.actionBtn} onClick={regenerate}>
               <span>Regenerate</span>
             </button>
