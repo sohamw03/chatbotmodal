@@ -83,7 +83,7 @@ export default function Chatbot() {
           }
           const modifiedOutput = `${parsedSource}\n${output}`;
           console.log(modifiedOutput);
-          responseJson = { output: `${modifiedOutput}` };
+          responseJson = { output: JSON.stringify(modifiedOutput) };
           break;
       }
 
