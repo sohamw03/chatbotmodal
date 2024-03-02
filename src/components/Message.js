@@ -1,14 +1,18 @@
 import { motion } from "framer-motion";
 import copy_icon from "../assets/copy_icon.svg";
+import done_icon from "../assets/done_icon.svg";
 import styles from "./chatbot.module.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useGlobal } from "../context/GlobalContext";
 
 export default function Message(props) {
-  // Chatbot context
   const { scrollToBottom } = props;
 
+  // Global context
   const { chatMode } = useGlobal();
+
+  // Chatbot context
+  const [copied, setCopied] = useState(false);
 
   // New messages can be animated using framer motion
   const isNewMessage = props.index === props.messagesLength - 1;
@@ -17,7 +21,11 @@ export default function Message(props) {
   const style_msgType = props.message.sender === "BOT" ? styles.chatbot_message : styles.user_message;
 
   const copyText = () => {
+    setCopied(true);
     navigator.clipboard.writeText(props.message.text);
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
   };
 
   const regenerate = () => {
@@ -35,7 +43,7 @@ export default function Message(props) {
         {/* <span className={styles.message_time}>{props.message.time}</span> */}
         <div className={styles.actionBtns} style={{ left: props.message.sender === "BOT" ? "0" : "auto", right: props.message.sender === "BOT" ? "auto" : "0" }}>
           <button className={styles.actionBtn} onClick={copyText}>
-            <img src={copy_icon} alt="Copy" draggable="false" />
+            {!copied ? <img src={copy_icon} alt="Copy" draggable="false" /> : <img src={done_icon} alt="Copied" draggable="false" />}
           </button>
           {props.message.sender === "BOT" && chatMode == "resume" ? (
             <button className={styles.actionBtn} onClick={regenerate}>

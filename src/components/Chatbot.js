@@ -76,6 +76,7 @@ export default function Chatbot() {
           break;
         case "policychat":
           responseJson = await policyChatAPI(data);
+          responseJson.output = responseJson.source + "\n" + responseJson.output;
           break;
       }
 

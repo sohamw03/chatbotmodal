@@ -156,6 +156,7 @@
     pointer-events: none;
     user-select: none;
     border-radius: 20px;
+    border-top-left-radius: 0.5rem;
     background: var(--secondary-color);
     word-wrap: break-word;
     overflow-wrap: anywhere;
