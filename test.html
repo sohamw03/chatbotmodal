@@ -20,9 +20,14 @@
             width: 23rem;
         }
     </style>
-    <script>
-        const conversation_id = document.getElementById('conversation_id').value;
+</head>
 
+<body>
+    <button onclick="sendMessageToIframe(`resume`);">Invoke Resume</button>
+    <button onclick="sendMessageToIframe(`policy`);">Invoke Policy</button>
+    <input type="text" name="conversation_id" id="conversation_id">
+    <iframe id="chatbot" src="http://192.168.168.117:3000" allow="clipboard-read; clipboard-write;"></iframe>
+    <script>
         function sendMessageToIframe(mode) {
             const iframe = document.querySelectorAll('iframe')[0];
             const data = mode == "resume" ? {
@@ -37,13 +42,6 @@
             iframe.contentWindow.postMessage(data, 'http://192.168.168.117:3000');
         }
     </script>
-</head>
-
-<body>
-    <button onclick="sendMessageToIframe(`resume`);">Invoke Resume</button>
-    <button onclick="sendMessageToIframe(`policy`);">Invoke Policy</button>
-    <input type="text" name="conversation_id" id="conversation_id">
-    <iframe id="chatbot" src="http://192.168.168.117:3000" allow="clipboard-read; clipboard-write;"></iframe>
     <h1>Welcome to My Webpage</h1>
 
     <h2>About Me</h2>
