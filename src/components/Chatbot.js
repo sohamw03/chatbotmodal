@@ -76,13 +76,20 @@ export default function Chatbot() {
           break;
         case "policychat":
           responseJson = await policyChatAPI(data);
-          responseJson.output = responseJson.source + "\n" + responseJson.output;
+          const { source, output } = responseJson;
+          let parsedSource = "";
+          for (const key in source) {
+            parsedSource += `${key}: ${source[key]}\n`;
+          }
+          const modifiedOutput = `${parsedSource}\n${output}`;
+          console.log(modifiedOutput);
+          responseJson = { output: `${modifiedOutput}` };
           break;
       }
 
       console.log(responseJson);
       if (responseJson) {
-        renderMessageOnScreen(responseJson.output, "BOT");
+        renderMessageOnScreen(responseJson, "BOT");
       }
     } catch (error) {
       console.error(error);
