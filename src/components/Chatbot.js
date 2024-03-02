@@ -83,13 +83,13 @@ export default function Chatbot() {
           }
           const modifiedOutput = `${parsedSource}\n${output}`;
           console.log(modifiedOutput);
-          responseJson = { output: JSON.stringify(modifiedOutput) };
+          responseJson = { output: modifiedOutput };
           break;
       }
 
       console.log(responseJson);
       if (responseJson) {
-        renderMessageOnScreen(responseJson, "BOT");
+        renderMessageOnScreen(responseJson.output, "BOT");
       }
     } catch (error) {
       console.error(error);
