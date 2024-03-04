@@ -1,11 +1,10 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import close_icon from "../assets/close_icon.svg";
 import new_chat_icon from "../assets/new_chat_icon.svg";
 import send_icon from "../assets/send_icon.svg";
 import { useGlobal } from "../context/GlobalContext";
-import deleteResumeChatAPI from "../functions/deleteResumeChatAPI";
 import deletePolicyChatAPI from "../functions/deletePolicyChatAPI";
+import deleteResumeChatAPI from "../functions/deleteResumeChatAPI";
 import { login } from "../functions/loginAPI";
 import policyChatAPI from "../functions/policyChatAPI";
 import resumeChatAPI from "../functions/resumeChatAPI";
@@ -93,7 +92,7 @@ export default function Chatbot() {
       }
     } catch (error) {
       console.error(error);
-      renderMessageOnScreen(`${error}`, "BOT");
+      renderMessageOnScreen(`Server not responding\n${error}`, "BOT");
     } finally {
       setInputAllowed(true);
       setMsgLoading(false);
